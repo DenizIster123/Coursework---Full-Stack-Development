@@ -1,0 +1,69 @@
+<html>
+    <head>
+        <title>After School Classes</title>
+        <style>
+            body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+ 
+        .box {
+            width: 300px;
+            padding: 20px;
+            border-radius: 15px;
+            background-color: white;
+            border: 1px solid rgb(38, 35, 112);
+            position: relative;
+        }
+ 
+        .box p {
+            margin: 10px 0;
+            font-size: 16px;
+        }
+ 
+        .add-to-cart-btn {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+ 
+        .add-to-cart-btn:hover {
+            background-color: #0056b3;
+        }
+        </style>
+        <script src="https://cdn.jsdelivr.net/npm/vue@2.7.16/dist/vue.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+        </head>
+
+        <body>
+            <div id="app">
+                <header>
+                    <h1>After School Classes</h1>
+                    <button v-on:click='showCheckout'>
+                        {{ cartItemCount }}
+                        <span class="fa-solid fa-cart-plus"></span> 
+                        Checkout
+                    </button>
+                </header>
+
+
+                <div class="After_School_Activities">
+                    <p><strong>Subject:</strong> Maths</p>
+                    <p><strong>Location:</strong> Dubai</p>
+                    <p><strong>Price:</strong> £100</p>
+                    <p><strong>Spaces available:</strong>5</p>
+                    <button class="add-to-cart-btn">Add to Cart</button>
+                    </div>
+        </body>
+    
