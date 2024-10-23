@@ -11,6 +11,14 @@
             display: flex;
             height: 100vh;
             margin: 0;
+            justify-content: center; /* Center horizontally */
+            align-items: center; /* Center vertically */
+        }
+
+        #app {
+            width: 100%; /* Make the app div take the full width */
+            max-width: 600px; /* Optional: limit the maximum width */
+            padding: 20px; /* Add some padding around the app */
         }
 
         header {
@@ -27,7 +35,6 @@
             padding: 10px 20px;
             cursor: pointer;
             font-size: 16px;
-            float: right;
         }
 
         header button .fa-cart-plus {
@@ -35,7 +42,7 @@
         }
 
         .After_School_Activities {
-            width: 300px;
+            width: 100%; /* Use full width of the app div */
             padding: 20px;
             border-radius: 15px;
             background-color: white;
