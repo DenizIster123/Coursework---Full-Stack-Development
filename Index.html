@@ -1,8 +1,11 @@
-<html>
-    <head>
-        <title>After School Classes</title>
-        <style>
-            body {
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>After School Classes</title>
+    <style>
+        body {
             font-family: Arial, sans-serif;
             background-color: #f0f0f0;
             display: flex;
@@ -10,60 +13,96 @@
             align-items: center;
             height: 100vh;
             margin: 0;
+            flex-direction: column;
         }
- 
-        .box {
+
+        header {
+            width: 100%;
+            padding: 15px;
+            text-align: center;
+        }
+
+        header button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 16px;
+            float: right;
+        }
+
+        header button .fa-cart-plus {
+            margin-left: 8px;
+        }
+
+        .After_School_Activities {
             width: 300px;
             padding: 20px;
             border-radius: 15px;
             background-color: white;
             border: 1px solid rgb(38, 35, 112);
-            position: relative;
+            margin-top: 20px;
         }
- 
-        .box p {
+
+        .After_School_Activities p {
             margin: 10px 0;
             font-size: 16px;
         }
- 
+
         .add-to-cart-btn {
-            position: absolute;
-            bottom: 20px;
-            right: 20px;
             padding: 10px 15px;
             background-color: #007bff;
             color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            margin-top: 20px; /* Add space between content and button */
         }
- 
+
         .add-to-cart-btn:hover {
             background-color: #0056b3;
         }
-        </style>
-        <script src="https://cdn.jsdelivr.net/npm/vue@2.7.16/dist/vue.js"></script>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-        </head>
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.7.16/dist/vue.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+</head>
+<body>
+    <div id="app">
+        <header>
+            <h1>After School Classes</h1>
+            <button v-on:click="showCheckout">
+                {{ cartItemCount }}
+                <span class="fa-solid fa-cart-plus"></span> 
+                Checkout
+            </button>
+        </header>
 
-        <body>
-            <div id="app">
-                <header>
-                    <h1>After School Classes</h1>
-                    <button v-on:click='showCheckout'>
-                        {{ cartItemCount }}
-                        <span class="fa-solid fa-cart-plus"></span> 
-                        Checkout
-                    </button>
-                </header>
+        <div class="After_School_Activities">
+            <p><strong>Subject:</strong> Maths</p>
+            <p><strong>Location:</strong> Dubai</p>
+            <p><strong>Price:</strong> £100</p>
+            <p><strong>Spaces available:</strong> 5</p>
+            <button class="add-to-cart-btn" v-on:click="addToCart">Add to Cart</button>
+        </div>
+    </div>
 
-
-                <div class="After_School_Activities">
-                    <p><strong>Subject:</strong> Maths</p>
-                    <p><strong>Location:</strong> Dubai</p>
-                    <p><strong>Price:</strong> £100</p>
-                    <p><strong>Spaces available:</strong>5</p>
-                    <button class="add-to-cart-btn">Add to Cart</button>
-                    </div>
-        </body>
-    
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                cartItemCount: 0,
+            },
+            methods: {
+                showCheckout() {
+                    alert('Showing checkout!');
+                },
+                addToCart() {
+                    this.cartItemCount++;
+                }
+            }
+        });
+    </script>
+</body>
+</html>
