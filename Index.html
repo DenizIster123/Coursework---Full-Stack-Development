@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>After School Classes</title>
+    <title>After School Clubs</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -41,13 +41,16 @@
             margin-left: 8px;
         }
 
+        .Activties-panel {
+        }
+
         .After_School_Activities {
-            width: 100%; /* Use full width of the app div */
+            width: 50%; /* Use full width of the app div */
             padding: 20px;
             border-radius: 15px;
             background-color: white;
             border: 1px solid rgb(38, 35, 112);
-            margin-top: 20px;
+            margin-top: 10px;
         }
 
         .After_School_Activities p {
@@ -75,7 +78,7 @@
 <body>
     <div id="app">
         <header>
-            <h1>After School Classes</h1>
+            <h1>After School Clubs</h1>
             <button v-on:click="showCheckout">
                 {{ cartItemCount }}
                 <span class="fa-solid fa-cart-plus"></span> 
@@ -83,12 +86,14 @@
             </button>
         </header>
 
-        <div class="After_School_Activities">
-            <p><strong>Subject:</strong> Maths</p>
-            <p><strong>Location:</strong> Dubai</p>
-            <p><strong>Price:</strong> £100</p>
-            <p><strong>Spaces available:</strong> 5</p>
-            <button class="add-to-cart-btn" v-on:click="addToCart">Add to Cart</button>
+        <div class="Activties-panel">
+            <div class="After_School_Activities">
+                <p><strong>Subject:</strong> Maths</p>
+                <p><strong>Location:</strong> Dubai</p>
+                <p><strong>Price:</strong> £100</p>
+                <p><strong>Spaces available:</strong> 5</p>
+                <button class="add-to-cart-btn" v-on:click="addToCart">Add to Cart</button>
+            </div>
         </div>
     </div>
 
