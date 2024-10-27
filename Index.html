@@ -16,9 +16,7 @@
         }
 
         #app {
-            width: 100%; /* Make the app div take the full width */
-            max-width: 600px; /* Optional: limit the maximum width */
-            padding: 20px; /* Add some padding around the app */
+            width: 70%; /* Make the app div take the full width */
         }
 
         header {
@@ -48,17 +46,17 @@
             align-items: center;
         }
 
-        .After_School_Activities {
+        .After_School_Activities_box {
             display:flex;
-            width: 50%; /* Use full width of the app div */
+            width: 300px; /* Use full width of the app div */
             padding: 20px;
             border-radius: 15px;
             background-color: white;
             border: 1px solid rgb(38, 35, 112);
-            margin-top: 10px;
+            margin: 10px;
         }
 
-        .After_School_Activities p {
+        .After_School_Activities_box p {
             margin: 10px 0;
             font-size: 16px;
         }
@@ -98,10 +96,20 @@
         </header>
 
         <div class="Activties-panel">
-            <div class="After_School_Activities">
+            <div class="After_School_Activities_box">
                 <div class="activity-details;">
                     <p><strong>Subject:</strong> Maths</p>
-                    <p><strong>Location:</strong> Dubai</p>
+                    <p><strong>Location:</strong> London</p>
+                    <p><strong>Price:</strong> £100</p>
+                    <p><strong>Spaces available:</strong> 5</p>
+                    <button class="add-to-cart-btn" v-on:click="addToCart">Add to Cart</button>
+                </div>
+                <img src="Images/maths.jpg" alt="Math Club" class="Activity-image">
+            </div>
+            <div class="After_School_Activities_box">
+                <div class="activity-details;">
+                    <p><strong>Subject:</strong> Maths</p>
+                    <p><strong>Location:</strong> Oxford</p>
                     <p><strong>Price:</strong> £100</p>
                     <p><strong>Spaces available:</strong> 5</p>
                     <button class="add-to-cart-btn" v-on:click="addToCart">Add to Cart</button>
