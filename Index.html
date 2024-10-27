@@ -11,20 +11,17 @@
             display: flex;
             height: 100vh;
             margin: 0;
-            justify-content: center; /* Center horizontally */
-            align-items: center; /* Center vertically */
+            justify-content: center;
+            align-items: center;
         }
-
         #app {
-            width: 70%; /* Make the app div take the full width */
+            width: 70%;
         }
-
         header {
             width: 100%;
             padding: 15px;
             text-align: center;
         }
-
         header button {
             background-color: #007bff;
             color: white;
@@ -34,32 +31,27 @@
             cursor: pointer;
             font-size: 16px;
         }
-
         header button .fa-cart-plus {
             margin-left: 8px;
         }
-
         .Activties-panel {
             display: grid;
-            grid-template-columns: repeat(3, 1fr); /* Set a max of 3 columns */
-            max-width: 100%; /* Prevents the container from exceeding screen width */
+            grid-template-columns: repeat(3, 1fr);
+            max-width: 100%;
         }
-
         .After_School_Activities_box {
-            display:flex;
-            width: 300px; /* Use full width of the app div */
+            display: flex;
+            width: 300px;
             padding: 20px;
             border-radius: 15px;
             background-color: white;
             border: 1px solid rgb(38, 35, 112);
             margin: 10px;
         }
-
         .After_School_Activities_box p {
             margin: 10px 0;
             font-size: 16px;
         }
-
         .add-to-cart-btn {
             padding: 10px 15px;
             background-color: #007bff;
@@ -67,13 +59,11 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            margin-top: 20px; /* Add space between content and button */
+            margin-top: 20px;
         }
-
         .add-to-cart-btn:hover {
             background-color: #0056b3;
         }
-
         .Activity-image {
             width: 150px;
             height: 150px;
@@ -95,55 +85,16 @@
         </header>
 
         <div class="Activties-panel">
-            <div class="After_School_Activities_box">
-                <div class="activity-details;">
-                    <p><strong>Subject:</strong> Maths</p>
-                    <p><strong>Location:</strong> London</p>
-                    <p><strong>Price:</strong> £100</p>
-                    <p><strong>Spaces available:</strong> 5</p>
+            <!-- Loop through each activity and display -->
+            <div v-for="activity in activities" :key="activity.location" class="After_School_Activities_box">
+                <div class="activity-details">
+                    <p><strong>Subject:</strong> {{ activity.topic }}</p>
+                    <p><strong>Location:</strong> {{ activity.location }}</p>
+                    <p><strong>Price:</strong> £{{ activity.price }}</p>
+                    <p><strong>Spaces available:</strong> {{ activity.space }}</p>
                     <button class="add-to-cart-btn" v-on:click="addToCart">Add to Cart</button>
                 </div>
-                <img src="Images/maths.jpg" alt="Math Club" class="Activity-image">
-            </div>
-            <div class="After_School_Activities_box">
-                <div class="activity-details;">
-                    <p><strong>Subject:</strong> Maths</p>
-                    <p><strong>Location:</strong> Oxford</p>
-                    <p><strong>Price:</strong> £100</p>
-                    <p><strong>Spaces available:</strong> 5</p>
-                    <button class="add-to-cart-btn" v-on:click="addToCart">Add to Cart</button>
-                </div>
-                <img src="Images/maths.jpg" alt="Math Club" class="Activity-image">
-            </div>
-            <div class="After_School_Activities_box">
-                <div class="activity-details;">
-                    <p><strong>Subject:</strong> English</p>
-                    <p><strong>Location:</strong> London</p>
-                    <p><strong>Price:</strong> £100</p>
-                    <p><strong>Spaces available:</strong> 5</p>
-                    <button class="add-to-cart-btn" v-on:click="addToCart">Add to Cart</button>
-                </div>
-                <img src="Images/english.jpg" alt="Math Club" class="Activity-image">
-            </div>
-            <div class="After_School_Activities_box">
-                <div class="activity-details;">
-                    <p><strong>Subject:</strong> English</p>
-                    <p><strong>Location:</strong> York</p>
-                    <p><strong>Price:</strong> £80</p>
-                    <p><strong>Spaces available:</strong> 5</p>
-                    <button class="add-to-cart-btn" v-on:click="addToCart">Add to Cart</button>
-                </div>
-                <img src="Images/english.jpg" alt="Math Club" class="Activity-image">
-            </div>
-            <div class="After_School_Activities_box">
-                <div class="activity-details;">
-                    <p><strong>Subject:</strong> Music</p>
-                    <p><strong>Location:</strong> Bristol</p>
-                    <p><strong>Price:</strong> £90</p>
-                    <p><strong>Spaces available:</strong> 5</p>
-                    <button class="add-to-cart-btn" v-on:click="addToCart">Add to Cart</button>
-                </div>
-                <img src="Images/music.jpg" alt="Math Club" class="Activity-image">
+                <img :src="'Images/' + activity.topic + '.jpg'" :alt="activity.topic + ' Club'" class="Activity-image">
             </div>
         </div>
     </div>
@@ -153,6 +104,7 @@
             el: '#app',
             data: {
                 cartItemCount: 0,
+                activities: [] // Array to store fetched activities
             },
             methods: {
                 showCheckout() {
@@ -160,7 +112,20 @@
                 },
                 addToCart() {
                     this.cartItemCount++;
+                },
+                fetchActivities() {
+                    // Simulate fetching data from an endpoint
+                    const activitiesData = [
+                        { topic: 'math', location: 'Hendon', price: 110, space: 5 },
+                        { topic: 'english', location: 'Colindale', price: 69, space: 2 },
+                        { topic: 'music', location: 'Brent Cross', price: 72, space: 6 },
+                        { topic: 'maths', location: 'Chumley lol', price: 2002, space: 69 }
+                    ];
+                    this.activities = activitiesData;
                 }
+            },
+            mounted() {
+                this.fetchActivities(); // Load activities on page load
             }
         });
     </script>
