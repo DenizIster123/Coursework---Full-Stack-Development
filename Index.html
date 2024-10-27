@@ -40,10 +40,9 @@
         }
 
         .Activties-panel {
-            height: 80vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* Set a max of 3 columns */
+            max-width: 100%; /* Prevents the container from exceeding screen width */
         }
 
         .After_School_Activities_box {
