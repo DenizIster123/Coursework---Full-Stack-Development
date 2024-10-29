@@ -86,9 +86,19 @@
 </head>
 <body>
     <div id="app">
+        
         <header>
             <input type="text" v-model="searchQuery" placeholder="Search by Subject or Location">
             <h1>After School Clubs</h1>
+            <!-- <label for="sortOptions">Sort by:</label>
+            <select id="sortOptions" v-model="sortOption">
+                <option value="subjectAsc">Subject (A-Z)</option>
+                <option value="subjectDesc">Subject (Z-A)</option>
+                <option value="locationAsc">Location (A-Z)</option>
+                <option value="locationDesc">Location (Z-A)</option>
+                <option value="priceLowToHigh">Price: Low to High</option>
+                <option value="priceHighToLow">Price: High to Low</option>
+            </select> -->
             <button v-on:click="showCheckout">
                 {{ cartItemCount }}
                 <span class="fa-solid fa-cart-plus"></span> 
@@ -96,6 +106,16 @@
             </button>
         </header>
 
+        <label for="sortOptions">Sort by:</label>
+            <select id="sortOptions" v-model="sortOption">
+                <option value="subjectAsc">Subject (A-Z)</option>
+                <option value="subjectDesc">Subject (Z-A)</option>
+                <option value="locationAsc">Location (A-Z)</option>
+                <option value="locationDesc">Location (Z-A)</option>
+                <option value="avalability">avalability</option>
+                <option value="priceLowToHigh">Price: Low to High</option>
+                <option value="priceHighToLow">Price: High to Low</option>
+            </select>
         
         <div class="Activties-panel">
             <div class="After_School_Activities_box">
