@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
     <title>After School Clubs</title>
     <style>
         body {
@@ -86,6 +87,7 @@
 <body>
     <div id="app">
         <header>
+            <input type="text" v-model="searchQuery" placeholder="Search by Subject or Location">
             <h1>After School Clubs</h1>
             <button v-on:click="showCheckout">
                 {{ cartItemCount }}
@@ -94,6 +96,7 @@
             </button>
         </header>
 
+        
         <div class="Activties-panel">
             <div class="After_School_Activities_box">
                 <div class="activity-details;">
