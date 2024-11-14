@@ -154,6 +154,16 @@
                 <p><input type="radio" id="business" value="Business" v-model="order.method">
                     <label for="business">Business</label>
                 </p>
+                
+                <h2>Order Information</h2>
+                <p>First Name: {{ order.firstName }}</p>
+                <p>Last Name: {{ order.lastName }}</p>
+                <p>Address: {{ order.address }}</p>
+                <p>City: {{ order.city }}</p>
+                <p>State: {{ order.state }}</p>
+                <p>Zip: {{ order.zip }}</p>
+                <p>Gift? {{ order.gift }}</p>
+                <p>Method: {{ order.method }}</p>
                 <button v-on:click="submitForm">Place Order</button>
             </div>
         </main>
