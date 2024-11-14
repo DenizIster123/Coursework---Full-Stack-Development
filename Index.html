@@ -26,17 +26,27 @@
         header h1 {
             font-size: 24px;
         }
-        header button {
+        header .controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        header button, header select, header input[type="text"] {
             background-color: #ff9800;
             border: none;
             color: white;
-            padding: 10px;
+            padding: 8px;
             cursor: pointer;
         }
         header button:hover {
             background-color: #e68900;
         }
-
+        header select, header input[type="text"] {
+            padding: 5px;
+            border-radius: 4px;
+            color: black;
+            background-color: white;
+        }
         /* Activity Box Styles */
         .activity-list {
             display: flex;
@@ -86,45 +96,29 @@
             background-color: #ccc;
             cursor: not-allowed;
         }
-
-        /* Checkout Form Styles */
-        main h2 {
-            margin-top: 20px;
-        }
-        input, select {
-            width: 100%;
-            padding: 8px;
-            margin: 5px 0;
-            box-sizing: border-box;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-        button[type="submit"] {
-            background-color: #007bff;
-            border: none;
-            color: white;
-            padding: 10px;
-            cursor: pointer;
-            border-radius: 4px;
-            margin-top: 10px;
-        }
-        button[type="submit"]:hover {
-            background-color: #007bff;
-        }
     </style>
 </head>
 <body>
     <div id="app">
         <header>
             <h1>{{ sitename }}</h1>
-            <button v-on:click="showCheckout">
-                {{ cartItemCount }} <span class="fa-solid fa-cart-plus"></span> Checkout
-            </button>
+            <div class="controls">
+                <input type="text" v-model="searchQuery" placeholder="Search activities..." />
+                <button v-on:click="searchActivities">Search</button>
+                <select v-model="sortBy" @change="sortActivities">
+                    <option value="">Sort by</option>
+                    <option value="price">Price</option>
+                    <option value="subject">Subject</option>
+                </select>
+                <button v-on:click="showCheckout">
+                    {{ cartItemCount }} <span class="fa-solid fa-cart-plus"></span> Checkout
+                </button>
+            </div>
         </header>
         <main>
             <!-- Show the activity list if showActivities is true -->
             <div v-if="showActivities" class="activity-list">
-                <div v-for="activity in activities" :key="activity.id" class="activity-box">
+                <div v-for="activity in filteredActivities" :key="activity.id" class="activity-box">
                     <h2>{{ activity.subject }}</h2>
                     <figure>
                         <img :src="activity.image" :alt="activity.subject" />
@@ -160,16 +154,6 @@
                 <p><input type="radio" id="business" value="Business" v-model="order.method">
                     <label for="business">Business</label>
                 </p>
-
-                <h2>Order Information</h2>
-                <p>First Name: {{ order.firstName }}</p>
-                <p>Last Name: {{ order.lastName }}</p>
-                <p>Address: {{ order.address }}</p>
-                <p>City: {{ order.city }}</p>
-                <p>State: {{ order.state }}</p>
-                <p>Zip: {{ order.zip }}</p>
-                <p>Gift? {{ order.gift }}</p>
-                <p>Method: {{ order.method }}</p>
                 <button v-on:click="submitForm">Place Order</button>
             </div>
         </main>
@@ -181,8 +165,10 @@
             data: {
                 sitename: 'After School Activities',
                 showActivities: true,
+                searchQuery: '',
+                sortBy: '',
                 activities: [
-                { id: 1, subject: 'Maths', location: 'London', price: 100, spaces: 5, image: 'Images/maths.jpg' },
+                    { id: 1, subject: 'Maths', location: 'London', price: 100, spaces: 5, image: 'Images/maths.jpg' },
                     { id: 2, subject: 'Maths', location: 'Oxford', price: 100, spaces: 5, image: 'Images/maths.jpg' },
                     { id: 3, subject: 'English', location: 'London', price: 100, spaces: 5, image: 'Images/english.jpg' },
                     { id: 4, subject: 'English', location: 'York', price: 80, spaces: 5, image: 'Images/english.jpg' },
@@ -191,9 +177,7 @@
                     { id: 7, subject: 'PE', location: 'Manchester', price: 70, spaces: 5, image: 'Images/PE.jpg' },
                     { id: 8, subject: 'Science', location: 'London', price: 100, spaces: 20, image: 'Images/science.png' },
                     { id: 9, subject: 'IT', location: 'London', price: 90, spaces: 10, image: 'Images/IT.jpg' }
-                
-            
-            ],
+                ],
                 states: {
                     AL: 'Alabama',
                     AZ: 'Arizona',
@@ -227,11 +211,26 @@
                 },
                 cartCount(id) {
                     return this.cart.filter(activityId => activityId === id).length;
+                },
+                searchActivities() {
+                    // This method will be triggered when the search button is clicked
+                },
+                sortActivities() {
+                    if (this.sortBy === 'price') {
+                        this.activities.sort((a, b) => a.price - b.price);
+                    } else if (this.sortBy === 'subject') {
+                        this.activities.sort((a, b) => a.subject.localeCompare(b.subject));
+                    }
                 }
             },
             computed: {
                 cartItemCount() {
                     return this.cart.length || "";
+                },
+                filteredActivities() {
+                    return this.activities.filter(activity => {
+                        return activity.subject.toLowerCase().includes(this.searchQuery.toLowerCase());
+                    });
                 }
             }
         });
