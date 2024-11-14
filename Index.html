@@ -2,6 +2,116 @@
 <head>
     <title>After School Activities</title>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.7.16/dist/vue.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
+    <style>
+        /* General Layout */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+        }
+        #app {
+            width: 80%;
+            margin: 0 auto;
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+        }
+        header h1 {
+            font-size: 24px;
+        }
+        header button {
+            background-color: #ff9800;
+            border: none;
+            color: white;
+            padding: 10px;
+            cursor: pointer;
+        }
+        header button:hover {
+            background-color: #e68900;
+        }
+
+        /* Activity Box Styles */
+        .activity-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .activity-box {
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            width: 250px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: transform 0.2s;
+            padding: 15px;
+        }
+        .activity-box:hover {
+            transform: scale(1.02);
+        }
+        .activity-box h2 {
+            font-size: 18px;
+            margin: 10px 0;
+            color: #333;
+        }
+        .activity-box img {
+            width: 100%;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 10px;
+        }
+        .activity-box p {
+            font-size: 14px;
+            color: #666;
+            margin: 5px 0;
+        }
+        .activity-box button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 8px;
+            cursor: pointer;
+            width: 100%;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+        .activity-box button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        /* Checkout Form Styles */
+        main h2 {
+            margin-top: 20px;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0;
+            box-sizing: border-box;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button[type="submit"] {
+            background-color: #4CAF50;
+            border: none;
+            color: white;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+        button[type="submit"]:hover {
+            background-color: #45a049;
+        }
+    </style>
 </head>
 <body>
     <div id="app">
@@ -13,11 +123,11 @@
         </header>
         <main>
             <!-- Show the activity list if showActivities is true -->
-            <div v-if="showActivities">
-                <div v-for="activity in activities" :key="activity.id">
+            <div v-if="showActivities" class="activity-list">
+                <div v-for="activity in activities" :key="activity.id" class="activity-box">
                     <h2>{{ activity.subject }}</h2>
                     <figure>
-                        <img :src="activity.image" :alt="activity.subject" width="150" />
+                        <img :src="activity.image" :alt="activity.subject" />
                     </figure>
                     <p>Location: {{ activity.location }}</p>
                     <p>Price: £{{ activity.price }}</p>
@@ -26,6 +136,7 @@
                     <button disabled v-else>Out of stock</button>
                 </div>
             </div>
+
             <!-- Show the checkout form if showActivities is false -->
             <div v-else>
                 <h2>Checkout</h2>
@@ -69,7 +180,7 @@
             el: '#app',
             data: {
                 sitename: 'After School Activities',
-                showActivities: true,  // Toggle to control activity list or checkout display
+                showActivities: true,
                 activities: [
                     { id: 1, subject: 'Maths', location: 'London', price: 100, spaces: 5, image: 'Images/maths.jpg' },
                     { id: 2, subject: 'English', location: 'York', price: 80, spaces: 5, image: 'Images/english.jpg' },
@@ -92,14 +203,14 @@
                     method: 'Home',
                     gift: false
                 },
-                cart: []  // Stores items added to cart
+                cart: []
             },
             methods: {
                 addToCart(activity) {
                     this.cart.push(activity.id);
                 },
                 showCheckout() {
-                    this.showActivities = !this.showActivities;  // Toggle between activities and checkout form
+                    this.showActivities = !this.showActivities;
                 },
                 submitForm() {
                     alert('Order submitted!');
@@ -113,7 +224,7 @@
             },
             computed: {
                 cartItemCount() {
-                    return this.cart.length || "";  // Show cart count or nothing if empty
+                    return this.cart.length || "";
                 }
             }
         });
