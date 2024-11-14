@@ -208,7 +208,12 @@
             },
             methods: {
                 addToCart(activity) {
-                    this.cart.push(activity.id);
+                    // Decrement the spaces available for the selected activity
+                    const selectedActivity = this.activities.find(a => a.id === activity.id);
+                    if (selectedActivity && selectedActivity.spaces > 0) {
+                        selectedActivity.spaces--;
+                        this.cart.push(activity.id);
+                    }
                 },
                 showCheckout() {
                     this.showActivities = !this.showActivities;
