@@ -3,7 +3,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
     <title>After School Clubs</title>
     <style>
         body {
@@ -12,12 +11,12 @@
             display: flex;
             height: 100vh;
             margin: 0;
-            justify-content: center; /* Center horizontally */
-            align-items: center; /* Center vertically */
+            justify-content: center;
+            align-items: center;
         }
 
         #app {
-            width: 70%; /* Make the app div take the full width */
+            width: 70%;
         }
 
         header {
@@ -42,13 +41,13 @@
 
         .Activties-panel {
             display: grid;
-            grid-template-columns: repeat(3, 1fr); /* Set a max of 3 columns */
-            max-width: 100%; /* Prevents the container from exceeding screen width */
+            grid-template-columns: repeat(3, 1fr);
+            max-width: 100%;
         }
 
         .After_School_Activities_box {
-            display:flex;
-            width: 300px; /* Use full width of the app div */
+            display: flex;
+            width: 300px;
             padding: 20px;
             border-radius: 15px;
             background-color: white;
@@ -68,7 +67,7 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            margin-top: 20px; /* Add space between content and button */
+            margin-top: 20px;
         }
 
         .add-to-cart-btn:hover {
@@ -79,6 +78,14 @@
             width: 150px;
             height: 150px;
             object-fit: cover;
+        }
+
+        .checkout-form {
+            margin-top: 20px;
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
         }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.7.16/dist/vue.js"></script>
@@ -96,109 +103,28 @@
             </button>
         </header>
 
-        
         <label for="sortOptions">Sort by:</label>
         <select id="sortOptions" v-model="sortOption">
             <option value="subjectAsc">Subject (A-Z)</option>
             <option value="subjectDesc">Subject (Z-A)</option>
             <option value="locationAsc">Location (A-Z)</option>
             <option value="locationDesc">Location (Z-A)</option>
-            <option value="avalability">Avalability</option>
+            <option value="availability">Availability</option>
             <option value="priceLowToHigh">Price: Low to High</option>
             <option value="priceHighToLow">Price: High to Low</option>
         </select>
         
         <div class="Activties-panel">
-            <div class="After_School_Activities_box">
-                <div class="activity-details;">
-                    <p><strong>Subject:</strong> Maths</p>
-                    <p><strong>Location:</strong> London</p>
-                    <p><strong>Price:</strong> £100</p>
-                    <p><strong>Spaces available:</strong> 5</p>
+            <div class="After_School_Activities_box" v-for="activity in activities" :key="activity.id">
+                <div class="activity-details">
+                    <p><strong>Subject:</strong> {{ activity.subject }}</p>
+                    <p><strong>Location:</strong> {{ activity.location }}</p>
+                    <p><strong>Price:</strong> £{{ activity.price }}</p>
+                    <p><strong>Spaces available:</strong> {{ activity.spaces }}</p>
                     <button class="add-to-cart-btn" v-on:click="addToCart">Add to Cart</button>
                 </div>
-                
-                <img src="Images/maths.jpg" alt="Math Club" class="Activity-image">
+                <img :src="activity.image" alt="Activity Image" class="Activity-image">
             </div>
-            <div class="After_School_Activities_box">
-                <div class="activity-details;">
-                    <p><strong>Subject:</strong> Maths</p>
-                    <p><strong>Location:</strong> Oxford</p>
-                    <p><strong>Price:</strong> £100</p>
-                    <p><strong>Spaces available:</strong> 5</p>
-                    <button class="add-to-cart-btn" v-on:click="addToCart">Add to Cart</button>
-                </div>
-                <img src="Images/maths.jpg" alt="Math Club" class="Activity-image">
-            </div>
-            <div class="After_School_Activities_box">
-                <div class="activity-details;">
-                    <p><strong>Subject:</strong> English</p>
-                    <p><strong>Location:</strong> London</p>
-                    <p><strong>Price:</strong> £100</p>
-                    <p><strong>Spaces available:</strong> 5</p>
-                    <button class="add-to-cart-btn" v-on:click="addToCart">Add to Cart</button>
-                </div>
-                <img src="Images/english.jpg" alt="Math Club" class="Activity-image">
-            </div>
-            <div class="After_School_Activities_box">
-                <div class="activity-details;">
-                    <p><strong>Subject:</strong> English</p>
-                    <p><strong>Location:</strong> York</p>
-                    <p><strong>Price:</strong> £80</p>
-                    <p><strong>Spaces available:</strong> 5</p>
-                    <button class="add-to-cart-btn" v-on:click="addToCart">Add to Cart</button>
-                </div>
-                <img src="Images/english.jpg" alt="Math Club" class="Activity-image">
-            </div>
-            <div class="After_School_Activities_box">
-                <div class="activity-details;">
-                    <p><strong>Subject:</strong> Music</p>
-                    <p><strong>Location:</strong> Bristol</p>
-                    <p><strong>Price:</strong> £90</p>
-                    <p><strong>Spaces available:</strong>10</p>
-                    <button class="add-to-cart-btn" v-on:click="addToCart">Add to Cart</button>
-                </div>
-                <img src="Images/music.jpg" alt="Math Club" class="Activity-image">
-            </div>
-            <div class="After_School_Activities_box">
-                <div class="activity-details;">
-                    <p><strong>Subject:</strong> PE</p>
-                    <p><strong>Location:</strong> London</p>
-                    <p><strong>Price:</strong> £50</p>
-                    <p><strong>Spaces available:</strong>15</p>
-                    <button class="add-to-cart-btn" v-on:click="addToCart">Add to Cart</button>
-                </div>
-                <img src="Images/PE.jpg" alt="Math Club" class="Activity-image">
-            </div>
-            <div class="After_School_Activities_box">
-                <div class="activity-details;">
-                    <p><strong>Subject:</strong> PE</p>
-                    <p><strong>Location:</strong> Manchester</p>
-                    <p><strong>Price:</strong> £70</p>
-                    <p><strong>Spaces available:</strong>5</p>
-                    <button class="add-to-cart-btn" v-on:click="addToCart">Add to Cart</button>
-                </div>
-                <img src="Images/PE.jpg" alt="Math Club" class="Activity-image">
-        </div>
-        <div class="After_School_Activities_box">
-            <div class="activity-details;">
-                <p><strong>Subject:</strong> Science</p>
-                <p><strong>Location:</strong> London</p>
-                <p><strong>Price:</strong>£100</p>
-                <p><strong>Spaces available:</strong>20</p>
-                <button class="add-to-cart-btn" v-on:click="addToCart">Add to Cart</button>
-            </div>
-            <img src="Images/science.png" alt="Math Club" class="Activity-image">
-    </div>
-    <div class="After_School_Activities_box">
-        <div class="activity-details;">
-            <p><strong>Subject:</strong> IT</p>
-            <p><strong>Location:</strong> London</p>
-            <p><strong>Price:</strong>£90</p>
-            <p><strong>Spaces available:</strong>10</p>
-            <button class="add-to-cart-btn" v-on:click="addToCart">Add to Cart</button>
-        </div>
-        <img src="Images/IT.jpg" alt="Math Club" class="Activity-image">
         </div>
 
         <div v-if="showCheckoutForm" class="checkout-form">
@@ -218,6 +144,7 @@
             </form>
         </div>
     </div>
+
     <script>
         new Vue({
             el: '#app',
@@ -228,53 +155,32 @@
                     name: '',
                     email: '',
                     address: ''
-                }
+                },
+                activities: [
+                    { id: 1, subject: 'Maths', location: 'London', price: 100, spaces: 5, image: 'Images/maths.jpg' },
+                    { id: 2, subject: 'Maths', location: 'Oxford', price: 100, spaces: 5, image: 'Images/maths.jpg' },
+                    { id: 3, subject: 'English', location: 'London', price: 100, spaces: 5, image: 'Images/english.jpg' },
+                    { id: 4, subject: 'English', location: 'York', price: 80, spaces: 5, image: 'Images/english.jpg' },
+                    { id: 5, subject: 'Music', location: 'Bristol', price: 90, spaces: 10, image: 'Images/music.jpg' },
+                    { id: 6, subject: 'PE', location: 'London', price: 50, spaces: 15, image: 'Images/PE.jpg' },
+                    { id: 7, subject: 'PE', location: 'Manchester', price: 70, spaces: 5, image: 'Images/PE.jpg' },
+                    { id: 8, subject: 'Science', location: 'London', price: 100, spaces: 20, image: 'Images/science.png' },
+                    { id: 9, subject: 'IT', location: 'London', price: 90, spaces: 10, image: 'Images/IT.jpg' }
+                ]
             },
             methods: {
-                showCheckout() {
-                    
-                    this.showProduct = this.showProduct ? false:true;
+                toggleCheckoutForm() {
+                    this.showCheckoutForm = !this.showCheckoutForm;
                 },
                 addToCart() {
                     this.cartItemCount++;
                 },
-                submitForm() {alert('Order submitted!')},
-                    canAddToCart: function(product){
-                        return product.availableInventory > this.cartCount(product.id);
-                    },
-                    cartCount(id){
-                        let count = 0;
-                        for (let i = 0; i< this.cart.length; i++){
-                            if (this.cart[i]=== id){
-                                count++;
-                            }
-                        }
-                        return count;
-                    },
-                    computed:{// the Computed Property object
-                
-                cartItemCount:function(){// the property name
-                    //its value is calculated when it is called}    
-                    return this.cart.length||"";
-                },
-                itemsLeft(){
-                    return this.product.availableInventory - this.cartItemCount;
-                },
-                sortedProducts(){
-                let productsArray = this.products.slice(0);
-                function compare(a,b){
-                    if(a.price > b.price)
-                        return 1;
-                    if (a.price < b.price)
-                        return -1;
-                return 0;
+                submitForm() {
+                    alert('Order submitted!');
+                    this.showCheckoutForm = false;
                 }
-                return productsArray.sort(compare);
-        
-            },
-        },
-    },
-    });
+            }
+        });
     </script>
 </body>
 </html>
