@@ -86,36 +86,27 @@
 </head>
 <body>
     <div id="app">
-        
         <header>
             <input type="text" v-model="searchQuery" placeholder="Search by Subject or Location">
             <h1>After School Clubs</h1>
-            <!-- <label for="sortOptions">Sort by:</label>
-            <select id="sortOptions" v-model="sortOption">
-                <option value="subjectAsc">Subject (A-Z)</option>
-                <option value="subjectDesc">Subject (Z-A)</option>
-                <option value="locationAsc">Location (A-Z)</option>
-                <option value="locationDesc">Location (Z-A)</option>
-                <option value="priceLowToHigh">Price: Low to High</option>
-                <option value="priceHighToLow">Price: High to Low</option>
-            </select> -->
-            <button v-on:click="showCheckout">
+            <button v-on:click="toggleCheckoutForm">
                 {{ cartItemCount }}
                 <span class="fa-solid fa-cart-plus"></span> 
                 Checkout
             </button>
         </header>
 
+        
         <label for="sortOptions">Sort by:</label>
-            <select id="sortOptions" v-model="sortOption">
-                <option value="subjectAsc">Subject (A-Z)</option>
-                <option value="subjectDesc">Subject (Z-A)</option>
-                <option value="locationAsc">Location (A-Z)</option>
-                <option value="locationDesc">Location (Z-A)</option>
-                <option value="avalability">avalability</option>
-                <option value="priceLowToHigh">Price: Low to High</option>
-                <option value="priceHighToLow">Price: High to Low</option>
-            </select>
+        <select id="sortOptions" v-model="sortOption">
+            <option value="subjectAsc">Subject (A-Z)</option>
+            <option value="subjectDesc">Subject (Z-A)</option>
+            <option value="locationAsc">Location (A-Z)</option>
+            <option value="locationDesc">Location (Z-A)</option>
+            <option value="avalability">Avalability</option>
+            <option value="priceLowToHigh">Price: Low to High</option>
+            <option value="priceHighToLow">Price: High to Low</option>
+        </select>
         
         <div class="Activties-panel">
             <div class="After_School_Activities_box">
@@ -126,6 +117,7 @@
                     <p><strong>Spaces available:</strong> 5</p>
                     <button class="add-to-cart-btn" v-on:click="addToCart">Add to Cart</button>
                 </div>
+                
                 <img src="Images/maths.jpg" alt="Math Club" class="Activity-image">
             </div>
             <div class="After_School_Activities_box">
@@ -209,21 +201,80 @@
         <img src="Images/IT.jpg" alt="Math Club" class="Activity-image">
         </div>
 
+        <div v-if="showCheckoutForm" class="checkout-form">
+            <h2>Checkout</h2>
+            <form @submit.prevent="submitForm">
+                <label for="name">Name:</label>
+                <input type="text" id="name" v-model="formData.name" required>
+
+                <label for="email">Email:</label>
+                <input type="email" id="email" v-model="formData.email" required>
+
+                <label for="address">Address:</label>
+                <textarea id="address" v-model="formData.address" required></textarea>
+
+                <button type="submit">Submit Order</button>
+                <button type="button" @click="toggleCheckoutForm">Cancel</button>
+            </form>
+        </div>
+    </div>
     <script>
         new Vue({
             el: '#app',
             data: {
                 cartItemCount: 0,
+                showCheckoutForm: false,
+                formData: {
+                    name: '',
+                    email: '',
+                    address: ''
+                }
             },
             methods: {
                 showCheckout() {
-                    alert('Showing checkout!');
+                    
+                    this.showProduct = this.showProduct ? false:true;
                 },
                 addToCart() {
                     this.cartItemCount++;
+                },
+                submitForm() {alert('Order submitted!')},
+                    canAddToCart: function(product){
+                        return product.availableInventory > this.cartCount(product.id);
+                    },
+                    cartCount(id){
+                        let count = 0;
+                        for (let i = 0; i< this.cart.length; i++){
+                            if (this.cart[i]=== id){
+                                count++;
+                            }
+                        }
+                        return count;
+                    },
+                    computed:{// the Computed Property object
+                
+                cartItemCount:function(){// the property name
+                    //its value is calculated when it is called}    
+                    return this.cart.length||"";
+                },
+                itemsLeft(){
+                    return this.product.availableInventory - this.cartItemCount;
+                },
+                sortedProducts(){
+                let productsArray = this.products.slice(0);
+                function compare(a,b){
+                    if(a.price > b.price)
+                        return 1;
+                    if (a.price < b.price)
+                        return -1;
+                return 0;
                 }
-            }
-        });
+                return productsArray.sort(compare);
+        
+            },
+        },
+    },
+    });
     </script>
 </body>
 </html>
