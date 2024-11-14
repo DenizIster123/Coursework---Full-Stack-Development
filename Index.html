@@ -1,183 +1,119 @@
-<!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>After School Clubs</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f0f0;
-            display: flex;
-            height: 100vh;
-            margin: 0;
-            justify-content: center;
-            align-items: center;
-        }
-
-        #app {
-            width: 70%;
-        }
-
-        header {
-            width: 100%;
-            padding: 15px;
-            text-align: center;
-        }
-
-        header button {
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            padding: 10px 20px;
-            cursor: pointer;
-            font-size: 16px;
-        }
-
-        header button .fa-cart-plus {
-            margin-left: 8px;
-        }
-
-        .Activties-panel {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            max-width: 100%;
-        }
-
-        .After_School_Activities_box {
-            display: flex;
-            width: 300px;
-            padding: 20px;
-            border-radius: 15px;
-            background-color: white;
-            border: 1px solid rgb(38, 35, 112);
-            margin: 10px;
-        }
-
-        .After_School_Activities_box p {
-            margin: 10px 0;
-            font-size: 16px;
-        }
-
-        .add-to-cart-btn {
-            padding: 10px 15px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-top: 20px;
-        }
-
-        .add-to-cart-btn:hover {
-            background-color: #0056b3;
-        }
-
-        .Activity-image {
-            width: 150px;
-            height: 150px;
-            object-fit: cover;
-        }
-
-        .checkout-form {
-            margin-top: 20px;
-            background-color: #fff;
-            padding: 15px;
-            border-radius: 10px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-        }
-    </style>
+    <title>After School Activities</title>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.7.16/dist/vue.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
 </head>
 <body>
     <div id="app">
         <header>
-            <input type="text" v-model="searchQuery" placeholder="Search by Subject or Location">
-            <h1>After School Clubs</h1>
-            <button v-on:click="toggleCheckoutForm">
-                {{ cartItemCount }}
-                <span class="fa-solid fa-cart-plus"></span> 
-                Checkout
+            <h1>{{ sitename }}</h1>
+            <button v-on:click="showCheckout">
+                {{ cartItemCount }} <span class="fa-solid fa-cart-plus"></span> Checkout
             </button>
         </header>
-
-        <label for="sortOptions">Sort by:</label>
-        <select id="sortOptions" v-model="sortOption">
-            <option value="subjectAsc">Subject (A-Z)</option>
-            <option value="subjectDesc">Subject (Z-A)</option>
-            <option value="locationAsc">Location (A-Z)</option>
-            <option value="locationDesc">Location (Z-A)</option>
-            <option value="availability">Availability</option>
-            <option value="priceLowToHigh">Price: Low to High</option>
-            <option value="priceHighToLow">Price: High to Low</option>
-        </select>
-        
-        <div class="Activties-panel">
-            <div class="After_School_Activities_box" v-for="activity in activities" :key="activity.id">
-                <div class="activity-details">
-                    <p><strong>Subject:</strong> {{ activity.subject }}</p>
-                    <p><strong>Location:</strong> {{ activity.location }}</p>
-                    <p><strong>Price:</strong> £{{ activity.price }}</p>
-                    <p><strong>Spaces available:</strong> {{ activity.spaces }}</p>
-                    <button class="add-to-cart-btn" v-on:click="addToCart">Add to Cart</button>
+        <main>
+            <!-- Show the activity list if showActivities is true -->
+            <div v-if="showActivities">
+                <div v-for="activity in activities" :key="activity.id">
+                    <h2>{{ activity.subject }}</h2>
+                    <figure>
+                        <img :src="activity.image" :alt="activity.subject" width="150" />
+                    </figure>
+                    <p>Location: {{ activity.location }}</p>
+                    <p>Price: £{{ activity.price }}</p>
+                    <p>Spaces Available: {{ activity.spaces }}</p>
+                    <button v-on:click="addToCart(activity)" v-if="canAddToCart(activity)">Add to cart</button>
+                    <button disabled v-else>Out of stock</button>
                 </div>
-                <img :src="activity.image" alt="Activity Image" class="Activity-image">
             </div>
-        </div>
+            <!-- Show the checkout form if showActivities is false -->
+            <div v-else>
+                <h2>Checkout</h2>
+                <p><strong>First Name:</strong> <input v-model.trim="order.firstName" /></p>
+                <p><strong>Last Name:</strong> <input v-model="order.lastName" /></p>
+                <p><strong>Address:</strong> <input v-model="order.address" /></p>
+                <p><strong>City:</strong> <input v-model="order.city" /></p>
+                <p><strong>State:</strong>
+                    <select v-model="order.state">
+                        <option disabled value="">Select a state</option>
+                        <option v-for="(name, code) in states" :value="name">{{ code }} - {{ name }}</option>
+                    </select>
+                </p>
+                <p><strong>Zip/Postal Code:</strong> <input v-model.number="order.zip" type="number" /></p>
+                <p><input type="checkbox" id="gift" v-model="order.gift">
+                    <label for="gift">Ship as gift?</label>
+                </p>
+                <p><input type="radio" id="home" value="Home" v-model="order.method">
+                    <label for="home">Home</label>
+                </p>
+                <p><input type="radio" id="business" value="Business" v-model="order.method">
+                    <label for="business">Business</label>
+                </p>
 
-        <div v-if="showCheckoutForm" class="checkout-form">
-            <h2>Checkout</h2>
-            <form @submit.prevent="submitForm">
-                <label for="name">Name:</label>
-                <input type="text" id="name" v-model="formData.name" required>
-
-                <label for="email">Email:</label>
-                <input type="email" id="email" v-model="formData.email" required>
-
-                <label for="address">Address:</label>
-                <textarea id="address" v-model="formData.address" required></textarea>
-
-                <button type="submit">Submit Order</button>
-                <button type="button" @click="toggleCheckoutForm">Cancel</button>
-            </form>
-        </div>
+                <h2>Order Information</h2>
+                <p>First Name: {{ order.firstName }}</p>
+                <p>Last Name: {{ order.lastName }}</p>
+                <p>Address: {{ order.address }}</p>
+                <p>City: {{ order.city }}</p>
+                <p>State: {{ order.state }}</p>
+                <p>Zip: {{ order.zip }}</p>
+                <p>Gift? {{ order.gift }}</p>
+                <p>Method: {{ order.method }}</p>
+                <button v-on:click="submitForm">Place Order</button>
+            </div>
+        </main>
     </div>
 
-    <script>
-        new Vue({
+    <script type="text/javascript">
+        var app = new Vue({
             el: '#app',
             data: {
-                cartItemCount: 0,
-                showCheckoutForm: false,
-                formData: {
-                    name: '',
-                    email: '',
-                    address: ''
-                },
+                sitename: 'After School Activities',
+                showActivities: true,  // Toggle to control activity list or checkout display
                 activities: [
                     { id: 1, subject: 'Maths', location: 'London', price: 100, spaces: 5, image: 'Images/maths.jpg' },
-                    { id: 2, subject: 'Maths', location: 'Oxford', price: 100, spaces: 5, image: 'Images/maths.jpg' },
-                    { id: 3, subject: 'English', location: 'London', price: 100, spaces: 5, image: 'Images/english.jpg' },
-                    { id: 4, subject: 'English', location: 'York', price: 80, spaces: 5, image: 'Images/english.jpg' },
-                    { id: 5, subject: 'Music', location: 'Bristol', price: 90, spaces: 10, image: 'Images/music.jpg' },
-                    { id: 6, subject: 'PE', location: 'London', price: 50, spaces: 15, image: 'Images/PE.jpg' },
-                    { id: 7, subject: 'PE', location: 'Manchester', price: 70, spaces: 5, image: 'Images/PE.jpg' },
-                    { id: 8, subject: 'Science', location: 'London', price: 100, spaces: 20, image: 'Images/science.png' },
-                    { id: 9, subject: 'IT', location: 'London', price: 90, spaces: 10, image: 'Images/IT.jpg' }
-                ]
+                    { id: 2, subject: 'English', location: 'York', price: 80, spaces: 5, image: 'Images/english.jpg' },
+                    { id: 3, subject: 'Music', location: 'Bristol', price: 90, spaces: 10, image: 'Images/music.jpg' },
+                    { id: 4, subject: 'PE', location: 'London', price: 50, spaces: 15, image: 'Images/PE.jpg' },
+                ],
+                states: {
+                    AL: 'Alabama',
+                    AZ: 'Arizona',
+                    CA: 'California',
+                    NV: 'Nevada'
+                },
+                order: {
+                    firstName: '',
+                    lastName: '',
+                    address: '',
+                    city: '',
+                    state: '',
+                    zip: '',
+                    method: 'Home',
+                    gift: false
+                },
+                cart: []  // Stores items added to cart
             },
             methods: {
-                toggleCheckoutForm() {
-                    this.showCheckoutForm = !this.showCheckoutForm;
+                addToCart(activity) {
+                    this.cart.push(activity.id);
                 },
-                addToCart() {
-                    this.cartItemCount++;
+                showCheckout() {
+                    this.showActivities = !this.showActivities;  // Toggle between activities and checkout form
                 },
                 submitForm() {
                     alert('Order submitted!');
-                    this.showCheckoutForm = false;
+                },
+                canAddToCart(activity) {
+                    return activity.spaces > this.cartCount(activity.id);
+                },
+                cartCount(id) {
+                    return this.cart.filter(activityId => activityId === id).length;
+                }
+            },
+            computed: {
+                cartItemCount() {
+                    return this.cart.length || "";  // Show cart count or nothing if empty
                 }
             }
         });
