@@ -208,11 +208,11 @@
             },
             methods: {
                 addToCart(activity) {
-                    // Decrement the spaces available for the selected activity
+                    // Check if there are available spaces before adding to cart
                     const selectedActivity = this.activities.find(a => a.id === activity.id);
                     if (selectedActivity && selectedActivity.spaces > 0) {
-                        selectedActivity.spaces--;
-                        this.cart.push(activity.id);
+                        selectedActivity.spaces--;  // Decrease the spaces count
+                        this.cart.push(activity.id);  // Add the activity to the cart
                     }
                 },
                 showCheckout() {
@@ -222,7 +222,8 @@
                     alert('Order submitted!');
                 },
                 canAddToCart(activity) {
-                    return activity.spaces > this.cartCount(activity.id);
+                    // Only allow adding to cart if spaces are greater than zero
+                    return activity.spaces > 0;
                 },
                 cartCount(id) {
                     return this.cart.filter(activityId => activityId === id).length;
