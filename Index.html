@@ -109,6 +109,8 @@
                     <option value="">Sort by</option>
                     <option value="price">Price</option>
                     <option value="subject">Subject</option>
+                    <option value="location">Location</option>
+                    <option value="availability">Availability</option>
                 </select>
                 <button v-on:click="showCheckout">
                     {{ cartItemCount }} <span class="fa-solid fa-cart-plus"></span> Checkout
@@ -132,30 +134,43 @@
             </div>
 
             <!-- Show the checkout form if showActivities is false -->
+            
             <div v-else>
                 <h2>Checkout</h2>
+            
+                <!-- Selected Lessons as Boxes -->
+                <div class="activity-list">
+                    <div v-for="item in cartDetails" :key="item.id" class="activity-box">
+                        <h2>{{ item.subject }}</h2>
+                        <figure>
+                            <img :src="item.image" :alt="item.subject" />
+                        </figure>
+                        <p>Location: {{ item.location }}</p>
+                        <p>Price: £{{ item.price }}</p>
+                        <p>Spaces Available: {{ item.spaces }}</p>
+                        <button v-on:click="removeFromCart(item)">Remove</button>
+                    </div>
+                </div>
+            
+                <!-- Order Form -->
+                <h2>Order Details</h2>
                 <p><strong>First Name:</strong> <input v-model.trim="order.firstName" /></p>
                 <p><strong>Last Name:</strong> <input v-model="order.lastName" /></p>
-                <p><strong>Phone:</strong> <input v-model="order.phone"/></p>
+                <p><strong>Phone:</strong> <input v-model="order.phone" /></p>
                 <p><strong>Address:</strong> <input v-model="order.address" /></p>
                 <p><strong>City:</strong> <input v-model="order.city" /></p>
-                <p><input type="radio" id="home" value="Home" v-model="order.method">
+                <p>
+                    <input type="radio" id="home" value="Home" v-model="order.method">
                     <label for="home">Home</label>
                 </p>
-                <p><input type="radio" id="business" value="Business" v-model="order.method">
+                <p>
+                    <input type="radio" id="business" value="Business" v-model="order.method">
                     <label for="business">Business</label>
                 </p>
-                
-                <h2>Order Information</h2>
-                <p>First Name: {{ order.firstName }}</p>
-                <p>Last Name: {{ order.lastName }}</p>
-                <p>Phone: {{ order.phone }}</p>
-                <p>Address: {{ order.address }}</p>
-                <p>City: {{ order.city }}</p>
-                <p>Gift? {{ order.gift }}</p>
-                <p>Method: {{ order.method }}</p>
+            
                 <button v-on:click="submitForm">Place Order</button>
             </div>
+            
         </main>
     </div>
 
@@ -220,8 +235,23 @@
                         this.activities.sort((a, b) => a.price - b.price);
                     } else if (this.sortBy === 'subject') {
                         this.activities.sort((a, b) => a.subject.localeCompare(b.subject));
+                    } else if (this.sortBy === 'location') {
+                         this.activities.sort((a, b) => a.location.localeCompare(b.location));
+                    } else if (this.sortBy === 'availability') {
+                      this.activities.sort((a, b) => b.spaces - a.spaces);
+                    }
+                },
+
+                removeFromCart(activity) {
+                    const index = this.cart.indexOf(activity.id);
+                    if (index > -1) {
+                        this.cart.splice(index, 1);
+                        // Restore spaces for the activity
+                        const selectedActivity = this.activities.find(a => a.id === activity.id);
+                        if (selectedActivity) selectedActivity.spaces++;
                     }
                 }
+
             },
             computed: {
                 cartItemCount() {
@@ -231,6 +261,9 @@
                     return this.activities.filter(activity => {
                         return activity.subject.toLowerCase().includes(this.searchQuery.toLowerCase());
                     });
+                },
+                cartDetails() {
+                    return this.cart.map(id => this.activities.find(activity => activity.id === id));
                 }
             }
         });
