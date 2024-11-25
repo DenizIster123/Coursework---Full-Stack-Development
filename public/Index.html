@@ -173,7 +173,6 @@
             
         </main>
     </div>
-
     <script type="text/javascript">
         var app = new Vue({
             el: '#app',
@@ -182,18 +181,7 @@
                 showActivities: true,
                 searchQuery: '',
                 sortBy: '',
-                activities: [
-                    { id: 1, subject: 'Maths', location: 'London', price: 100, spaces: 5, image: 'Images/maths.jpg' },
-                    { id: 2, subject: 'Maths', location: 'Oxford', price: 100, spaces: 5, image: 'Images/maths.jpg' },
-                    { id: 3, subject: 'English', location: 'London', price: 100, spaces: 5, image: 'Images/english.jpg' },
-                    { id: 4, subject: 'English', location: 'York', price: 80, spaces: 5, image: 'Images/english.jpg' },
-                    { id: 5, subject: 'Music', location: 'Bristol', price: 90, spaces: 10, image: 'Images/music.jpg' },
-                    { id: 6, subject: 'PE', location: 'London', price: 50, spaces: 15, image: 'Images/PE.jpg' },
-                    { id: 7, subject: 'PE', location: 'Manchester', price: 70, spaces: 15, image: 'Images/PE.jpg' },
-                    { id: 8, subject: 'Science', location: 'London', price: 100, spaces: 20, image: 'Images/science.png' },
-                    { id: 9, subject: 'IT', location: 'London', price: 90, spaces: 10, image: 'Images/IT.jpg' },
-                    { id: 10, subject: 'Geography', location: 'Manchester', price: 50, spaces: 10, image: 'Images/Geography.jpg' }
-                ], 
+                activities: [], // Empty array to hold fetched data
                 order: {
                     firstName: '',
                     lastName: '',
@@ -206,12 +194,20 @@
                 cart: []
             },
             methods: {
+                fetchActivities() {
+                    // Fetch activities from the server
+                    fetch('/lessons')
+                        .then(response => response.json())
+                        .then(data => {
+                            console.log(data);
+                        })
+                        .catch(error => console.error('Error fetching activities:', error));
+                },
                 addToCart(activity) {
-                    // Check if there are available spaces before adding to cart
                     const selectedActivity = this.activities.find(a => a.id === activity.id);
                     if (selectedActivity && selectedActivity.spaces > 0) {
-                        selectedActivity.spaces--;  // Decrease the spaces count
-                        this.cart.push(activity.id);  // Add the activity to the cart
+                        selectedActivity.spaces--;
+                        this.cart.push(activity.id);
                     }
                 },
                 showCheckout() {
@@ -221,37 +217,31 @@
                     alert('Order submitted!');
                 },
                 canAddToCart(activity) {
-                    // Only allow adding to cart if spaces are greater than zero
                     return activity.spaces > 0;
                 },
                 cartCount(id) {
                     return this.cart.filter(activityId => activityId === id).length;
                 },
-                searchActivities() {
-                    // This method will be triggered when the search button is clicked
-                },
+                searchActivities() {},
                 sortActivities() {
                     if (this.sortBy === 'price') {
                         this.activities.sort((a, b) => a.price - b.price);
                     } else if (this.sortBy === 'subject') {
                         this.activities.sort((a, b) => a.subject.localeCompare(b.subject));
                     } else if (this.sortBy === 'location') {
-                         this.activities.sort((a, b) => a.location.localeCompare(b.location));
+                        this.activities.sort((a, b) => a.location.localeCompare(b.location));
                     } else if (this.sortBy === 'availability') {
-                      this.activities.sort((a, b) => b.spaces - a.spaces);
+                        this.activities.sort((a, b) => b.spaces - a.spaces);
                     }
                 },
-
                 removeFromCart(activity) {
                     const index = this.cart.indexOf(activity.id);
                     if (index > -1) {
                         this.cart.splice(index, 1);
-                        // Restore spaces for the activity
                         const selectedActivity = this.activities.find(a => a.id === activity.id);
                         if (selectedActivity) selectedActivity.spaces++;
                     }
                 }
-
             },
             computed: {
                 cartItemCount() {
@@ -265,6 +255,9 @@
                 cartDetails() {
                     return this.cart.map(id => this.activities.find(activity => activity.id === id));
                 }
+            },
+            mounted() {
+                this.fetchActivities(); // Fetch data on app load
             }
         });
     </script>
