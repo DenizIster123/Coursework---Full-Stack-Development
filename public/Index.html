@@ -223,7 +223,46 @@
                     this.showActivities = !this.showActivities;
                 },
                 submitForm() {
-                    alert('Order submitted!');
+                    const orderDetails = {
+                        firstName: this.order.firstName,
+                        lastName: this.order.lastName,
+                        phone: this.order.phone,
+                        address: this.order.address,
+                        city: this.order.city,
+                        method: this.order.method,
+                        cart: this.cartDetails // Include details of selected activities
+                    };
+
+                    fetch('/order', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(orderDetails)
+                    })
+                    .then(response => {
+                        if (response.ok) {
+                            alert('Order submitted successfully!');
+                            this.resetForm(); // Clear the form and cart after successful submission
+                        } else {
+                            alert('Failed to submit order.');
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error submitting order:', error);
+                        alert('Error submitting order.');
+                    });
+                },
+                resetForm() {
+                    this.order = {
+                        firstName: '',
+                        lastName: '',
+                        phone: '',
+                        address: '',
+                        city: '',
+                        method: 'Home',
+                        gift: false
+                    };
+                    this.cart = [];
+                    this.showActivities = true;
                 },
                 canAddToCart(activity) {
                     return activity.spaces > 0;

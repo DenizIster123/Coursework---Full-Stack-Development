@@ -49,6 +49,17 @@ app.get('/lessons', (req, res) => {
 });
 
 
+app.post('/order', (req, res) => {
+    const order = req.body;
+
+    // Log the order details to the console
+    console.log('Order received:', order);
+
+    // You can add logic here to store the order in a database if needed
+    res.status(201).send({ message: 'Order received successfully!' });
+});
+
+
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
