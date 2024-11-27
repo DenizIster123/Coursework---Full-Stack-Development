@@ -34,11 +34,17 @@ app.get('/', (req, res, next) => {
 
 app.get('/lessons', (req, res) => {
     const lessons = [ 
-        {'topic': 'maths', 'location': 'Hendon', 'price': 100, 'space': 5}, 
-        {'topic': 'maths', 'location': 'Colindale', 'price': 80, 'space': 2}, 
-        {'topic': 'maths', 'location': 'Brent Cross', 'price': 90, 'space': 6}, 
-        {'topic': 'maths', 'location': 'Golders Green', 'price': 95, 'space': 7}, 
-    ];
+        { topic: 'Maths', location: 'London', price: 100, space: 5 }, 
+        { topic: 'Maths', location: 'Oxford', price: 100, space: 5 }, 
+        { topic: 'English', location: 'London', price: 100, space: 5 }, 
+        { topic: 'English', location: 'York', price: 80, space: 5 }, 
+        { topic: 'Music', location: 'Bristol', price: 90, space: 10 }, 
+        { topic: 'PE', location: 'London', price: 50, space: 15 }, 
+        { topic: 'PE', location: 'Manchester', price: 70, space: 15 }, 
+        { topic: 'Science', location: 'London', price: 100, space: 20 }, 
+        { topic: 'IT', location: 'London', price: 90, space: 10 }, 
+        { topic: 'Geography', location: 'Manchester', price: 50, space: 10 } 
+    ];    
     res.json(lessons);
 });
 
