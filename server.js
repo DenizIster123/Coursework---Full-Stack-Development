@@ -33,17 +33,11 @@ app.get('/', (req, res, next) => {
 
 
 app.get('/lessons', (req, res) => {
-    const lessons = [
-        { id: 1, subject: 'Maths', location: 'London', price: 100, spaces: 5, image: 'Images/maths.jpg' },
-        { id: 2, subject: 'Maths', location: 'Oxford', price: 100, spaces: 5, image: 'Images/maths.jpg' },
-        { id: 3, subject: 'English', location: 'London', price: 100, spaces: 5, image: 'Images/english.jpg' },
-        { id: 4, subject: 'English', location: 'York', price: 80, spaces: 5, image: 'Images/english.jpg' },
-        { id: 5, subject: 'Music', location: 'Bristol', price: 90, spaces: 10, image: 'Images/music.jpg' },
-        { id: 6, subject: 'PE', location: 'London', price: 50, spaces: 15, image: 'Images/PE.jpg' },
-        { id: 7, subject: 'PE', location: 'Manchester', price: 70, spaces: 15, image: 'Images/PE.jpg' },
-        { id: 8, subject: 'Science', location: 'London', price: 100, spaces: 20, image: 'Images/science.png' },
-        { id: 9, subject: 'IT', location: 'London', price: 90, spaces: 10, image: 'Images/IT.jpg' },
-        { id: 10, subject: 'Geography', location: 'Manchester', price: 50, spaces: 10, image: 'Images/Geography.jpg' }
+    const lessons = [ 
+        {'topic': 'maths', 'location': 'Hendon', 'price': 100, 'space': 5}, 
+        {'topic': 'maths', 'location': 'Colindale', 'price': 80, 'space': 2}, 
+        {'topic': 'maths', 'location': 'Brent Cross', 'price': 90, 'space': 6}, 
+        {'topic': 'maths', 'location': 'Golders Green', 'price': 95, 'space': 7}, 
     ];
     res.json(lessons);
 });

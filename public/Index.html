@@ -181,7 +181,9 @@
                 showActivities: true,
                 searchQuery: '',
                 sortBy: '',
-                activities: [], // Empty array to hold fetched data
+                activities: [
+                    { id: 1, subject: 'Maths', location: 'London', price: 100, spaces: 5, image: 'Images/maths.jpg' }
+                ], // Empty array to hold fetched data
                 order: {
                     firstName: '',
                     lastName: '',
@@ -195,11 +197,18 @@
             },
             methods: {
                 fetchActivities() {
-                    // Fetch activities from the server
                     fetch('/lessons')
                         .then(response => response.json())
                         .then(data => {
-                            this.activities = data;
+                            // Map backend response to frontend format
+                            this.activities = data.map((lesson, index) => ({
+                                id: index + 1, // Generate unique IDs
+                                subject: lesson.topic.trim(), // Remove leading space
+                                location: lesson.location,
+                                price: lesson.price,
+                                spaces: lesson.space,
+                                image: `Images/${lesson.topic.trim().toLowerCase()}.jpg`, // Assuming a pattern for image paths
+                            }));
                         })
                         .catch(error => console.error('Error fetching activities:', error));
                 },
