@@ -15,14 +15,13 @@ app.use((req, res, next) => {
     next();
 });
 
-/*
+
 const MongoClient = require('mongodb').MongoClient;
 
 let db;
 MongoClient.connect('mongodb+srv://isterdeniz01:Deniz01042003@cluster0.8apwj.mongodb.net/', (err, client) => {
     db = client.db('Webstore');
 });
-*/
 
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -64,5 +63,3 @@ const port = process.env.PORT || 3000;
 app.listen(port, () => {
     console.log(`Server running on port ${port}`);
 });
-
-
